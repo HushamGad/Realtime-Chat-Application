@@ -1,38 +1,55 @@
 import React, { useState } from 'react' // Importing React and the useState hook for managing state
-import { Link } from 'react-router-dom' // Importing Link from react-router-dom to handle navigation
+import { useNavigate } from 'react-router-dom' // Importing Link from react-router-dom to handle navigation
 import './Join.css' // Importing CSS file for styling
 
 const Join = () => {
   // Defining state variables to store the name and room inputs
+  const navigate = useNavigate();
   const [name, setName] = useState('') // 'name' state will store the user's name
   const [room, setRoom] = useState('') // 'room' state will store the room name
+  const [error, setError] = useState('')
+
+  const handleJoin = (e) => {
+    e.preventDefault()
+    if (!name.trim() || !room.trim()) {
+      setError('Name and Room are required')
+      return
+    }
+    // Navigate to chat with URL-enconded parameters
+    navigate(`/chat?name=${encodeURIComponent(name)}&room=${encodeURIComponent(room)}`)
+  }
   return (
     <div className='joinOuterContainer'>
       <div className='joinInnerContainer'>
         <h1 className='heading'>Join Chat</h1>
-        <div>
-          <input
-            className='joinInput'
-            placeholder='Name'
-            type='text'
-            onChange={event => setName(event.target.value)}// Update 'name' state when the input changes
-            required
-          />
-        </div>
-        <div>
-          <input
-            className='joinInput mt-20'
-            placeholder='Room' type='text'
-            onChange={event => setRoom(event.target.value)} // Update 'room' state when the input changes
-            required
-          />
-        </div>
-        {/* Link to navigate to the chat page, only if both 'name' and 'room' are provided */}
-        <Link onClick={event => (!name || !room) ? event.preventDefault() : null}// Prevents navigation if name or room is empty
-          to={`/chat?name=${name}&room=${room}`} // Navigates to the chat page, passing name and room as query parameters
-        >
-          <button className='button mt-20' type='submit'>Sign In</button>
-        </Link>
+        <form onSubmit={handleJoin}>
+          <div className='inputGroup'>
+            <label htmlFor='name'>Name</label>
+            <input
+              id='name'
+              className='joinInput'
+              placeholder='Enter your name'
+              type='text'
+              value={name}
+              onChange={e => setName(e.target.value)}// Update 'name' state when the input changes
+              required
+            />
+          </div>
+          <div className='inputGroup'>
+            <label htmlFor='room'>Room</label>
+            <input
+              id='room'
+              className='joinInput'
+              placeholder='Enter room name' 
+              type='text'
+              value={room}
+              onChange={e => setRoom(e.target.value)} // Update 'room' state when the input changes
+              required
+            />
+          </div>
+            {error && <div className='error'>{error}</div>}
+            <button className='button mt-20' type='submit'>Sign In</button>
+        </form>
       </div>
     </div>
   )
