@@ -10,7 +10,7 @@ import Picker from '@emoji-mart/react';
 import data from '@emoji-mart/data';
 import dayjs from 'dayjs';
 
-const ENDPOINT = 'http://localhost:5000';
+const ENDPOINT = 'https://realtime-chat-application-4nji.onrender.com';
 
 const Chat = () => {
   const location = useLocation();
