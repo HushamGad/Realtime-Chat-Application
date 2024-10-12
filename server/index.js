@@ -7,7 +7,7 @@ const router = require('./router');
 const { addUser, removeUser, getUser, getUsersInRoom } = require('./users');
 const dayjs = require('dayjs');
 
-const ORIGIN = 'http://localhost:3000';
+const ORIGIN = 'https://my-react-chat-app-123.netlify.app';
 const PORT = process.env.PORT || 5000;
 
 const app = express();
