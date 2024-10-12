@@ -6,23 +6,29 @@ const cors = require('cors');
 const router = require('./router');
 const { addUser, removeUser, getUser, getUsersInRoom } = require('./users');
 const dayjs = require('dayjs');
+require('dotenv').config(); // Ensure dotenv is used to load environment variables
 
-const ORIGIN = 'https://my-react-chat-app-123.netlify.app';
+// Load environment variables
+const ORIGIN = process.env.ORIGIN || 'https://my-react-chat-app-123.netlify.app';
 const PORT = process.env.PORT || 5000;
 
 const app = express();
 const server = http.createServer(app);
 
+// CORS configuration options
 const corsOptions = {
     origin: ORIGIN,
     methods: ['GET', 'POST'],
     allowedHeaders: ['Content-Type'],
-    credentials: true,
+    credentials: true, // Allow credentials such as cookies
 };
 
+// Apply CORS middleware to Express
 app.use(cors(corsOptions));
-app.use(router);
+app.use(express.json()); // Parse JSON bodies
+app.use(router); // Use your router for API endpoints
 
+// Initialize Socket.io with CORS settings
 const io = socketio(server, {
     cors: {
         origin: ORIGIN,
@@ -149,4 +155,5 @@ io.on('connection', (socket) => {
     });
 });
 
-server.listen(PORT, () => console.log(`Server is running at http://localhost:${PORT}/`));
+// Start the server
+server.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
