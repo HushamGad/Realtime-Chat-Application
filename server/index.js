@@ -6,7 +6,7 @@ const cors = require('cors');
 const router = require('./router');
 const { addUser, removeUser, getUser, getUsersInRoom } = require('./users');
 const dayjs = require('dayjs');
-require('dotenv').config(); // Ensure dotenv is used to load environment variables
+require('dotenv').config(); // Load environment variables
 
 // Load environment variables
 const ORIGIN = process.env.ORIGIN || 'https://my-react-chat-app-123.netlify.app';
